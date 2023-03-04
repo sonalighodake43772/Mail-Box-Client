@@ -17,6 +17,9 @@ const Header = () => {
     const sendHandler = () => {
       history.replace("/SendMail");
     };
+    const inboxHandler = () => {
+      history.replace("/MailInbox");
+    };
 
     return (
       <nav className="navbar navbar-dark bg-primary">
@@ -24,6 +27,9 @@ const Header = () => {
         <Button className="btn btn-warning " onClick={sendHandler}>
           Compose Mail
         </Button>
+        <Button className="btn btn-warning " onClick={inboxHandler}>
+        Inbox
+      </Button>
        
         <Button className="btn btn-warning float-right" onClick={logoutHandler}>
           Logout

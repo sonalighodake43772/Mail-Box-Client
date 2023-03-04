@@ -4,6 +4,7 @@ import DummyScreen from "./components/pages/DummyScreen";
 import SignUp from "./components/SignUp";
 import SendMail from "./components/pages/SendMail";
 import Header from "./components/pages/Header";
+import MailInbox from "./components/pages/MailInbox";
 
 
 
@@ -21,6 +22,9 @@ function App() {
       </Route>
       <Route path="/SendMail" exact>
         <SendMail />
+      </Route>
+      <Route path="/MailInbox" exact>
+        <MailInbox />
       </Route>
      
     </Fragment>

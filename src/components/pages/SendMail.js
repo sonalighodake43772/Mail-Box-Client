@@ -11,10 +11,8 @@ const SendMail = () => {
   const currEmail = useSelector((currState) => currState.auth.email);
 
   const [email, setEmail] = useState("");
-  const [text, setText] = useState("");
-
-  // const editor = useRef(null);
-  let content;
+  
+   let content;
 
     const onEditorStateChange = (event) => {
         content = event.getCurrentContent().getPlainText()
@@ -68,7 +66,8 @@ const SendMail = () => {
     };
     postData();
     setEmail("");
-    setText("");
+    
+    
   };
   return (
     <Fragment>
