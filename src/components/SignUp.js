@@ -1,17 +1,15 @@
 import { useState, } from "react";
 import { Form ,Button} from "react-bootstrap";
 import classes from './SignUp.module.css';
+import {useHistory} from "react-router-dom"
 
 const SignUp = () => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(true)
-
-  
-   
-  
+  const [isLogin, setIsLogin] = useState(true) 
+  const history=useHistory();;
   
   const emailHandler = (e) => {
     setEmail(e.target.value)
@@ -27,10 +25,7 @@ const SignUp = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-   
-       
-
-    if (
+if (
       password.length >= 6 &&
       confirmPassword.length >= 6 &&
       password === confirmPassword
@@ -72,6 +67,7 @@ const SignUp = () => {
         .then((data) => {
           if(isLogin){
           console.log(data.idToken);
+          history.replace('/DummyScreen');
          
           }
         })
@@ -134,9 +130,7 @@ const SignUp = () => {
             required
           />
           </Form.Group>
-          
-         
-        </div>
+          </div>
         <div>
         <Button variant="primary" type="submit" >{isLogin ? "Login" : "Sign up"}</Button><br/>
         {/* {isLoading && <p>sending request...</p>} */}
