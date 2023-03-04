@@ -2,6 +2,8 @@ import { useState, } from "react";
 import { Form ,Button} from "react-bootstrap";
 import classes from './SignUp.module.css';
 import {useHistory} from "react-router-dom"
+import { mailActions } from "./store/auth-slice";
+import { useDispatch } from "react-redux";
 
 const SignUp = () => {
 
@@ -9,7 +11,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true) 
-  const history=useHistory();;
+  const history=useHistory();
+  const dispatch = useDispatch();
   
   const emailHandler = (e) => {
     setEmail(e.target.value)
@@ -65,10 +68,18 @@ if (
           }
         })
         .then((data) => {
-          if(isLogin){
-          console.log(data.idToken);
-          history.replace('/DummyScreen');
-         
+          if (isLogin) {
+            console.log(data.idToken);
+            const regex = /[.@]/g;
+            const emailId = data.email.replace(regex, "");
+
+            dispatch(
+              mailActions.login({
+                email: emailId,
+                token: data.idToken,
+              })
+            );
+            history.replace("/SendMail");
           }
         })
         .catch((err) => {
