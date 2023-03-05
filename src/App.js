@@ -1,19 +1,93 @@
 
 import SignIn from "./components/SignUp";
-import { Fragment } from "react";
+import { Fragment,useEffect } from "react";
 import DummyScreen from "./components/pages/DummyScreen";
 import { Route } from "react-router-dom";
 import SendMail from "./components/pages/SendMail";
 import Header from "./components/pages/Header";
 import MailInbox from "./components/pages/MailInbox";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import MailDetail from "./components/pages/MailDetail";
-
 import Sent from "./components/pages/Sent";
+import { inboxActions } from "./components/store/inbox-slice";
 
 function App() {
   
   const isloggedIn = useSelector((currState) => currState.auth.isloggedIn);
+  const loggedEmail = useSelector((currState) => currState.auth.email);
+  const dispatch=useDispatch()
+  
+  const getSentData = async () => {
+
+    const sentMail = await fetch(
+      `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/sent.json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await sentMail.json();
+    console.log(data);
+    let newArray2 = [];
+    if (!!data) {
+      newArray2 = Object.keys(data).map((mail) => {
+        return {
+          id: mail,
+          email: data[mail].email,
+          body: data[mail].body,
+          read: data[mail].read,
+        };
+      });
+      dispatch(inboxActions.sentHandler({
+          newArray2: newArray2,
+        })
+      );
+      dispatch(inboxActions.sentMailRead(newArray2));
+    }
+  };
+
+  useEffect(() => {
+    getSentData();
+  }, []);
+
+  
+  const getdata = async () => {
+    const get = await fetch(
+      `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/inbox.json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await get.json();
+    console.log(data);
+    let newArray = [];
+    if (!!data) {
+      newArray = Object.keys(data).map((mail) => {
+        return {
+          id: mail,
+          email: data[mail].email,
+          body: data[mail].body,
+          read: data[mail].read,
+        };
+      });
+      dispatch(
+        inboxActions.inboxHandler({
+          newArray: newArray,
+        })
+      );
+      dispatch(inboxActions.inboxMailRead(newArray));
+    }
+  };
+  
+  useEffect(() => {
+    getdata();
+  }, []);
+
 
   return (
     <Fragment>
