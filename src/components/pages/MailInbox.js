@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { inboxActions } from "../store/inbox-slice";
 import { useHistory } from "react-router-dom";
 import { objActions } from "../store/obj-slice";
-// import classes from "./MailInbox.module.css";
+
 
 const MailInbox = () => {
   const history = useHistory();
@@ -82,18 +82,45 @@ const MailInbox = () => {
     history.replace("/MailDetail");
   };
 
+  const deleteHandler = async (obj) => {
+    
+    try {
+      const del = await fetch(
+        `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/inbox/${obj.id}.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await del.json();
+      getdata();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <Fragment>
       <h1 className="text-center">INBOX</h1>
       <ul>
         {inbox.map((obj) => (
-          <div key={obj.id}>
+          <div  key={obj.id}>
             <table className="table">
               <tbody>
                 <tr>
                   <td>{obj.email}</td>
-                  <td onClick={openMailHandler.bind(null, obj)}>{obj.body}</td>
+                  <td onClick={openMailHandler.bind(null, obj)}>{obj.text}</td>
                   <td>{!!obj.read ? "read" : <b>"Unread"</b>}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={deleteHandler.bind(null, obj)}
+                    >
+                      del
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
