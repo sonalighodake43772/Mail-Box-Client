@@ -5,12 +5,14 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import classes from "./SendMail.module.css";
 import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const SendMail = () => {
 
   const currEmail = useSelector((currState) => currState.auth.email);
 
   const [email, setEmail] = useState("");
+  const history =useHistory();
   
    let content;
 
@@ -39,6 +41,7 @@ const SendMail = () => {
           body: JSON.stringify({
             email: email,
             body:content,
+            read:false
           }),
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +57,8 @@ const SendMail = () => {
           method: "POST",
           body: JSON.stringify({
             email: currEmail,
-           body:content
+           body:content,
+           read:false
           }),
           headers: {
             "Content-Type": "application/json",
@@ -66,6 +70,7 @@ const SendMail = () => {
     };
     postData();
     setEmail("");
+    history.replace("/Sent");
     
     
   };

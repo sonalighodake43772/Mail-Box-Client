@@ -1,7 +1,9 @@
 .box{
     margin:auto;
     width: 1000px;
+    border:2px solid #333;
     padding: 20px;
-    background:#ade9df;
-    border:2px solid #333
 }
+   
+
+   

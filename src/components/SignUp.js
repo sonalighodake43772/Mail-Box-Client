@@ -79,7 +79,7 @@ if (
                 token: data.idToken,
               })
             );
-            history.replace("/SendMail");
+            history.replace("/MailInbox");
           }
         })
         .catch((err) => {
