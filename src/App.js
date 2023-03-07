@@ -8,6 +8,7 @@ import Header from "./components/pages/Header";
 import MailInbox from "./components/pages/MailInbox";
 import { useSelector,useDispatch } from "react-redux";
 import MailDetail from "./components/pages/MailDetail";
+
 import Sent from "./components/pages/Sent";
 import { inboxActions } from "./components/store/inbox-slice";
 
@@ -64,7 +65,7 @@ function App() {
       }
     );
     const data = await get.json();
-    console.log(data);
+    //console.log(data);
     let newArray = [];
     if (!!data) {
       newArray = Object.keys(data).map((mail) => {
@@ -84,9 +85,19 @@ function App() {
     }
   };
   
+  
+
+
+
   useEffect(() => {
+    const interval= setInterval(() => {
     getdata();
-  }, []);
+    }, 2000);
+    
+    return ()=> clearInterval (interval)
+    }, []);
+    
+  
 
 
   return (
