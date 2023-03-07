@@ -6,7 +6,6 @@ import { useEffect, Fragment } from "react";
 
 
 const Sent = () => {
- 
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -117,7 +116,7 @@ const Sent = () => {
       <h1 className="text-center">SENT</h1>
       <ul>
         {sentbox.map((obj) => (
-          <div key={obj.id}>
+          <div  key={obj.id}>
             <table className="table">
               <tbody>
                 <tr>
@@ -125,7 +124,7 @@ const Sent = () => {
                   <td onClick={openSentMailHandler.bind(null, obj)}>
                     {obj.body}
                   </td>
-                  
+
                   <td>
                     <button
                       className="btn btn-danger"
