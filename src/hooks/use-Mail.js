@@ -4,10 +4,7 @@ import { inboxActions } from "../components/store/inbox-slice";
 const useMail = async (sent = true) => {
   const loggedEmail = useSelector((currState) => currState.auth.email);
   const dispatch = useDispatch();
-
-
-
-  let url;
+ let url;
   if (sent) {
     url = `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/sent.json`;
   } else {
@@ -29,15 +26,17 @@ const useMail = async (sent = true) => {
             return {
               id: mail,
               email: data[mail].email,
+              subject:data[mail].subject,
               body: data[mail].body,
               read: data[mail].read,
+
             };
           });
           dispatch(inboxActions.sentHandler({
               newArray2: newArray2,
             })
           );
-          dispatch(inboxActions.sentMailRead(newArray2))
+    
        }
     }else{
         let newArray = [];
@@ -46,6 +45,7 @@ const useMail = async (sent = true) => {
         return {
           id: mail,
           email: data[mail].email,
+          subject:data[mail].subject,
           body: data[mail].body,
           read: data[mail].read,
         };
@@ -55,7 +55,7 @@ const useMail = async (sent = true) => {
           newArray: newArray,
         })
       );
-      dispatch(inboxActions.inboxMailRead(newArray))
+  
     }
 }
 

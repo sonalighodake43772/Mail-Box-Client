@@ -1,8 +1,8 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { inboxActions } from "../store/inbox-slice";
 import { useHistory } from "react-router-dom";
 import { objActions } from "../store/obj-slice";
+import useMail from "../../hooks/use-Mail";
 
 
 const MailInbox = () => {
@@ -11,40 +11,46 @@ const MailInbox = () => {
   const loggedEmail = useSelector((currState) => currState.auth.email);
   const dispatch = useDispatch();
   const inbox = useSelector((currState) => currState.array.inbox);
+  useMail(false);
 
-  const getdata = async () => {
-    const get = await fetch(
-      `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/inbox.json`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await get.json();
-    console.log(data);
-    let newArray = [];
-    if (!!data) {
-      newArray = Object.keys(data).map((mail) => {
-        return {
-          id: mail,
-          email: data[mail].email,
-          body: data[mail].body,
-          read: data[mail].read,
-        };
-      });
-      dispatch(
-        inboxActions.inboxHandler({
-          newArray: newArray,
-        })
-      );
-      dispatch(inboxActions.inboxMailRead(newArray));
-    }
-  };
-  useEffect(() => {
-    getdata();
-  }, []);
+  // const getdata = async () => {
+  //   const get = await fetch(
+  //     `https://mail-box-e2dc8-default-rtdb.firebaseio.com/${loggedEmail}/inbox.json`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   const data = await get.json();
+  //   console.log(data);
+  //   let newArray = [];
+  //   if (!!data) {
+  //     newArray = Object.keys(data).map((mail) => {
+  //       return {
+  //         id: mail,
+  //         email: data[mail].email,
+  //         body: data[mail].body,
+  //         read: data[mail].read,
+  //       };
+  //     });
+  //     dispatch(
+  //       inboxActions.inboxHandler({
+  //         newArray: newArray,
+  //       })
+  //     );
+  //     dispatch(inboxActions.inboxMailRead(newArray));
+  //   }
+  // };
+ 
+ // useEffect(() => {
+  //   const interval= setInterval(() => {
+  //   getdata();
+  //   }, 2000);
+    
+  //   return ()=> clearInterval (interval)
+  //   }, []);
 
   const inboxMailReadFetching = (mail) => {
     const updateData = async (mail) => {
@@ -73,12 +79,8 @@ const MailInbox = () => {
 
   const openMailHandler = (obj) => {
     dispatch(objActions.objHandler(obj));
-    dispatch(inboxActions.inboxMailRead(obj));
-
-    const mail = inbox.find((mail) => {
-      return mail.id === obj.id;
-    });
-    inboxMailReadFetching(mail);
+  
+    inboxMailReadFetching(obj);
     history.replace("/MailDetail");
   };
 
@@ -95,7 +97,7 @@ const MailInbox = () => {
         }
       );
       const data = await del.json();
-      getdata();
+      // getdata();
     } catch (err) {
       alert(err.message);
     }
@@ -111,7 +113,8 @@ const MailInbox = () => {
               <tbody>
                 <tr>
                   <td>{obj.email}</td>
-                  <td onClick={openMailHandler.bind(null, obj)}>{obj.text}</td>
+                  <td>{obj.subject}</td>
+                  <td onClick={openMailHandler.bind(null, obj)}>{obj.body}</td>
                   <td>{!!obj.read ? "read" : <b>"Unread"</b>}</td>
                   <td>
                     <button
