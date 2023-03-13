@@ -16,10 +16,12 @@ const Header = () => {
   const extractInboxValue = (inbox, read) => {
     let extractedInboxValue = inbox.map((mail) => mail[read]);
     return extractedInboxValue;
+    console.log("extract",extractedInboxValue);
   };
   let totalInboxUnread = 0;
   const unreadInboxMail = extractInboxValue(inbox, "read");
   unreadInboxMail.forEach((v) => (v ? v : totalInboxUnread++));
+  console.log("unreadinbox",unreadInboxMail);
 
 
   const extractSentValue = (sentbox, read) => {
@@ -68,7 +70,7 @@ const Header = () => {
          </Button>
        )}
       
-      <Button className="btn btn-warning float-right" onClick={logoutHandler}>
+      <Button className=" float-right" variant="secondary" onClick={logoutHandler}>
         Logout
       </Button>
     </nav>
