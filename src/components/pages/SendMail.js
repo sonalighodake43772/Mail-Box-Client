@@ -12,6 +12,7 @@ const SendMail = () => {
   const currEmail = useSelector((currState) => currState.auth.email);
 
   const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
   const history =useHistory();
   
    let content;
@@ -23,12 +24,16 @@ const SendMail = () => {
   const sendEmailHandler = (e) => {
     setEmail(e.target.value);
   };
+  const sendsubjectHandler = (e) => {
+    setSubject(e.target.value);
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
     const obj = {
       email: email,
-    body:content
+    body:content,
+    subject:subject,
     };
     const regex = /[.@]/g;
     const emailId = obj.email.replace(regex, "");
@@ -41,6 +46,7 @@ const SendMail = () => {
           body: JSON.stringify({
             email: email,
             body:content,
+            subject:subject,
             read:false
           }),
           headers: {
@@ -58,6 +64,7 @@ const SendMail = () => {
           body: JSON.stringify({
             email: currEmail,
            body:content,
+           subject:subject,
            read:false
           }),
           headers: {
@@ -70,6 +77,7 @@ const SendMail = () => {
     };
     postData();
     setEmail("");
+    setSubject("");
     history.replace("/Sent");
     
     
@@ -89,6 +97,18 @@ const SendMail = () => {
               placeholder="Example@gmail.com"
               value={email}
               onChange={sendEmailHandler}
+              required
+            />
+          </Form.Group>
+        </div>
+        <div>
+          <Form.Group controlId="subject">
+            <Form.Label>subject:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="subject"
+              value={subject}
+              onChange={sendsubjectHandler}
               required
             />
           </Form.Group>

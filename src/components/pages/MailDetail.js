@@ -26,6 +26,11 @@ const MailDetail = () => {
               </tr>
               <tr>
                 <td>
+                  <h6>subject: {specificEmail.subject}</h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
                   <h6>message: {specificEmail.body}</h6>
                 </td>
               </tr>
